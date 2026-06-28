@@ -1,0 +1,22 @@
+name: ladica-sync
+services:
+  db:
+    image: postgres:18
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=ladica_sync
+    ports:
+      - '5432:5432'
+    volumes:
+      - db:/var/lib/postgresql
+
+  mailhog:
+    image: mailhog/mailhog:v1.0.1
+    ports:
+      - '8025:8025'
+      - '1025:1025'
+
+volumes:
+  db:
+    driver: local

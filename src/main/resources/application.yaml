@@ -1,0 +1,47 @@
+spring:
+  application:
+    name: Ladica Sync
+  liquibase:
+    change-log: classpath:/db/dbchangelog.xml
+  jpa:
+    hibernate:
+      ddl-auto: validate
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${OAUTH2_GOOGLE_CLIENT_ID:}
+            client-secret: ${OAUTH2_GOOGLE_CLIENT_SECRET:}
+            scope: profile, email
+            redirect-uri: https://ladica-api.hrva.cc/login/oauth2/code/google
+  mail:
+    host: ${MAIL_HOST:smtp-pulse.com}
+    port: ${MAIL_PORT:2525}
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: when-authorized
+      show-components: when-authorized
+
+server:
+  forward-headers-strategy: framework
+
+app:
+  api-base-url: ${API_BASE_URL:https://ladica-api.hrva.cc}
+  frontend-url: ${FRONTEND_URL:https://ladica.hrva.cc}
+  jwt-base64-secret: ${JWT_BASE64_SECRET:}
+  jwt-token-validity-seconds: 2592000
+  magic-link-ttl-seconds: 900
+  magic-link-max-requests-per-hour: 5
+  magic-link-max-verify-attempts-per-hour: 20
+  max-links-per-user: 5000
+  mail-from: noreply@hrva.cc
+  mail-reply-to: link@hrvalabs.net

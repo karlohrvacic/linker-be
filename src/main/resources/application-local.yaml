@@ -1,0 +1,28 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ladica_sync
+    username: root
+    password: root
+  mail:
+    host: localhost
+    port: 1025
+    username:
+    password:
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: dummy-local
+            client-secret: dummy-local
+  config:
+    import: optional:application-oauth.yaml
+
+app:
+  api-base-url: http://localhost:8080
+  frontend-url: http://localhost:4321
+  # Throwaway local-dev JWT secret only. Decodes to a human-readable placeholder, never use in production. Override with JWT_BASE64_SECRET.
+  jwt-base64-secret: ${JWT_BASE64_SECRET:bGFkaWNhLXN5bmMtbG9jYWwtZGV2LW9ubHktdGhyb3dhd2F5LWp3dC1zZWNyZXQtbm90LWEtcmVhbC1zZWNyZXQ=}
+
+server:
+  port: 8080

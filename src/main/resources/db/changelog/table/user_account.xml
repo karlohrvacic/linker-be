@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet author="khrvacic" id="create-user-account">
+        <createSequence sequenceName="USER_ACCOUNT_ID_SEQ" startValue="1" incrementBy="1"/>
+        <createTable tableName="USER_ACCOUNT">
+            <column name="ID" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="EMAIL" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="AUTH_PROVIDER" type="VARCHAR(255)"/>
+            <column name="CREATED_AT" type="TIMESTAMP"/>
+            <column name="LAST_LOGIN_AT" type="TIMESTAMP"/>
+            <column name="ACTIVE" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="USER_ACCOUNT"/>
+            <dropSequence sequenceName="USER_ACCOUNT_ID_SEQ"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

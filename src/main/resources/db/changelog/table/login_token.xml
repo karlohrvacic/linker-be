@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet author="khrvacic" id="create-login-token">
+        <createSequence sequenceName="LOGIN_TOKEN_ID_SEQ" startValue="1" incrementBy="1"/>
+        <createTable tableName="LOGIN_TOKEN">
+            <column name="ID" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="EMAIL" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TOKEN_HASH" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="EXPIRES_AT" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="USED_AT" type="TIMESTAMP"/>
+        </createTable>
+        <rollback>
+            <dropTable tableName="LOGIN_TOKEN"/>
+            <dropSequence sequenceName="LOGIN_TOKEN_ID_SEQ"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet author="khrvacic" id="create-ladica-link">
+        <createSequence sequenceName="LADICA_LINK_ID_SEQ" startValue="1" incrementBy="1"/>
+        <createTable tableName="LADICA_LINK">
+            <column name="ID" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="USER_ID" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="FK_LINK_USER" referencedTableName="USER_ACCOUNT"
+                             referencedColumnNames="ID"/>
+            </column>
+            <column name="CLIENT_ID" type="VARCHAR(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="URL" type="VARCHAR(2048)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="NORMALIZED_URL" type="VARCHAR(2048)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="NAME" type="VARCHAR(512)"/>
+            <column name="CAT" type="VARCHAR(32)"/>
+            <column name="UPDATED_AT" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DELETED" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SERVER_SEQ" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATED_AT" type="TIMESTAMP"/>
+        </createTable>
+        <addUniqueConstraint tableName="LADICA_LINK" columnNames="USER_ID, CLIENT_ID" constraintName="UQ_LINK_USER_CLIENT"/>
+        <createIndex tableName="LADICA_LINK" indexName="IDX_LINK_USER_SEQ">
+            <column name="USER_ID"/>
+            <column name="SERVER_SEQ"/>
+        </createIndex>
+        <rollback>
+            <dropTable tableName="LADICA_LINK"/>
+            <dropSequence sequenceName="LADICA_LINK_ID_SEQ"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet author="khrvacic" id="create-ladica-link-active-url-unique-index">
+        <sql>CREATE UNIQUE INDEX UQ_LINK_USER_NORMALIZED_URL_ACTIVE ON LADICA_LINK (USER_ID, NORMALIZED_URL) WHERE deleted = false</sql>
+        <rollback>
+            <sql>DROP INDEX UQ_LINK_USER_NORMALIZED_URL_ACTIVE</sql>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>
