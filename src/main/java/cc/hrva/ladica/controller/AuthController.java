@@ -44,7 +44,7 @@ public class AuthController {
         log.info("Magic link requested");
 
         if (magicLinkRateLimiter.tryRequest(request.email(), clientIpResolver.resolve(httpRequest))) {
-            magicLinkService.requestLink(request.email());
+            magicLinkService.requestLink(request.email(), request.lang());
         } else {
             log.info("Magic link request rate limited");
         }

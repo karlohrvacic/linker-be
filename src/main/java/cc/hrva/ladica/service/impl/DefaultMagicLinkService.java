@@ -46,7 +46,7 @@ public class DefaultMagicLinkService implements MagicLinkService {
 
     @Override
     @Transactional
-    public void requestLink(final String email) {
+    public void requestLink(final String email, final String lang) {
         final var rawToken = generateRawToken();
         final var loginToken = LoginToken.builder()
                 .email(email)
@@ -55,7 +55,7 @@ public class DefaultMagicLinkService implements MagicLinkService {
                 .build();
         loginTokenRepository.save(loginToken);
 
-        mailSender.sendMagicLink(email, buildVerifyUrl(rawToken));
+        mailSender.sendMagicLink(email, buildVerifyUrl(rawToken), lang);
         log.debug("Magic link issued for {}", email);
     }
 

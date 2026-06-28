@@ -52,11 +52,12 @@ class DefaultMagicLinkServiceTest {
         when(appProperties.getMagicLinkTtlSeconds()).thenReturn(900L);
         when(appProperties.getApiBaseUrl()).thenReturn("http://localhost:8080");
 
-        service.requestLink("user@example.com");
+        service.requestLink("user@example.com", "hr");
 
         verify(mailSender).sendMagicLink(
                 eq("user@example.com"),
-                argThat(url -> url.startsWith("http://localhost:8080/api/v1/auth/magic-link/verify?token=")));
+                argThat(url -> url.startsWith("http://localhost:8080/api/v1/auth/magic-link/verify?token=")),
+                eq("hr"));
     }
 
     @Test

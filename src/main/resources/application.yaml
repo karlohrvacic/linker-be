@@ -17,14 +17,15 @@ spring:
             redirect-uri: https://ladica-api.hrva.cc/login/oauth2/code/google
   mail:
     host: ${MAIL_HOST:smtp-pulse.com}
-    port: ${MAIL_PORT:2525}
+    port: ${MAIL_PORT:587}
     username: ${MAIL_USERNAME:}
     password: ${MAIL_PASSWORD:}
     properties:
       mail:
         smtp:
-          # SendPulse (smtp-pulse.com:2525) requires authenticated, STARTTLS-upgraded
-          # SMTP. Without smtp.auth the credentials are never sent → relay refused.
+          # SendPulse (smtp-pulse.com:587, STARTTLS submission) requires authenticated,
+          # STARTTLS-upgraded SMTP. Without smtp.auth the credentials are never sent →
+          # relay refused. (Port 465 would instead need ssl.enable=true and no STARTTLS.)
           auth: ${MAIL_SMTP_AUTH:true}
           starttls:
             enable: ${MAIL_SMTP_STARTTLS:true}
@@ -57,4 +58,4 @@ app:
   magic-link-max-verify-attempts-per-hour: 20
   max-links-per-user: 5000
   mail-from: notifications@hrva.cc
-  mail-reply-to: link@hrvalabs.net
+  mail-reply-to: ladica@hrvalabs.net
