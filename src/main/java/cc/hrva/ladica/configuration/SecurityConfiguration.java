@@ -2,6 +2,7 @@ package cc.hrva.ladica.configuration;
 
 import cc.hrva.ladica.configuration.properties.AppProperties;
 import cc.hrva.ladica.security.JwtFilter;
+import cc.hrva.ladica.security.OAuth2LoginFailureHandler;
 import cc.hrva.ladica.security.OAuth2LoginSuccessHandler;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +38,7 @@ public class SecurityConfiguration {
     private final JwtFilter jwtFilter;
     private final AppProperties appProperties;
     private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
+    private final OAuth2LoginFailureHandler oAuth2LoginFailureHandler;
 
     @Bean
     public SecurityFilterChain filterChain(final HttpSecurity http) throws Exception {
@@ -52,7 +54,9 @@ public class SecurityConfiguration {
                                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED, authenticationException.getMessage())))
                 .sessionManagement(sessionManagement ->
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .oauth2Login(oauth2Login -> oauth2Login.successHandler(oAuth2LoginSuccessHandler))
+                .oauth2Login(oauth2Login -> oauth2Login
+                        .successHandler(oAuth2LoginSuccessHandler)
+                        .failureHandler(oAuth2LoginFailureHandler))
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

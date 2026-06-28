@@ -20,6 +20,19 @@ spring:
     port: ${MAIL_PORT:2525}
     username: ${MAIL_USERNAME:}
     password: ${MAIL_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          # SendPulse (smtp-pulse.com:2525) requires authenticated, STARTTLS-upgraded
+          # SMTP. Without smtp.auth the credentials are never sent → relay refused.
+          auth: ${MAIL_SMTP_AUTH:true}
+          starttls:
+            enable: ${MAIL_SMTP_STARTTLS:true}
+            required: ${MAIL_SMTP_STARTTLS:true}
+          # Fail fast instead of hanging the request thread on an unreachable relay.
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
 
 management:
   endpoints:
@@ -43,5 +56,5 @@ app:
   magic-link-max-requests-per-hour: 5
   magic-link-max-verify-attempts-per-hour: 20
   max-links-per-user: 5000
-  mail-from: noreply@hrva.cc
+  mail-from: notifications@hrva.cc
   mail-reply-to: link@hrvalabs.net

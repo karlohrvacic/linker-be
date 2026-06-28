@@ -8,6 +8,14 @@ spring:
     port: 1025
     username:
     password:
+    # Local SMTP (MailHog/Mailpit) is plaintext with no auth — override the prod defaults.
+    properties:
+      mail:
+        smtp:
+          auth: false
+          starttls:
+            enable: false
+            required: false
   security:
     oauth2:
       client:

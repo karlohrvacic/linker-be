@@ -26,9 +26,9 @@ services:
     container_name: ladica-postgres
     restart: always
     environment:
-      POSTGRES_USER: url_shortener
-      POSTGRES_PASSWORD: mVQCHb0HSYMDf9VE4bXfWKbnJYmh4TlM
-      POSTGRES_DB: url_shortener
+      POSTGRES_USER: ${SPRING_DATASOURCE_USERNAME}
+      POSTGRES_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+      POSTGRES_DB: ladica
     ports:
       - "5432:5432"
     networks:
